@@ -91,7 +91,7 @@ library(MASS); options(scipen = 10)
 #### SELECT P FROM NULL PC ANALYSIS
 
 source("Null PC fun.R")
-p <- null.pc.sim(gpa = gpa, nsims=100, plot=FALSE)
+p <- null.pc.sim(gpa = gpa, nsims=10000, plot=T)
 p 
 
 # Create data frame of the PCA data, GPA centroid size, and group classification.

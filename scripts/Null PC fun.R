@@ -47,10 +47,17 @@ ci<-matrix(NA, nrow = ncol(sds), ncol=2 )
   npcs<-25
   
 if(plot==TRUE){
+  jpeg(filename = "../output/Figure_S1.1.jpg",
+       width = 480, height = 480, units = "px", pointsize = 12,
+       quality = 100,
+       bg = "white", res = NA, family = "", restoreConsole = TRUE,
+       type = c("windows", "cairo"), 
+       symbolfamily="default")
+  
   plot(1:npcs, sds[1, 1:npcs], ylim=range(c(sds,STD)), type="n", axes = F,
        ylab="Variance Explained",
-       xlab="PCs")
-  axis(2)
+       xlab="Principal Components")
+  axis(2, at=seq(0,0.040, by=0.005))
   axis(1, seq(npcs))
   for (i in 1:nrow(sds)){
     lines(1:npcs, sds[i,1:npcs], col="#F6F5F5")
@@ -60,6 +67,7 @@ if(plot==TRUE){
   
   lines(1:npcs, ci[1:npcs,1], col="red", lwd=.5)
   lines(1:npcs, ci[1:npcs,2], col="red", lwd=.5)
+  dev.off()
 }
 
   
