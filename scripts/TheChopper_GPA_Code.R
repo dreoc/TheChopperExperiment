@@ -1,7 +1,8 @@
 rm(list=ls())
 
 # Load dependent packages and set up working directory. (Install geomorph version 3.3.2 if necessary).
-#install_version("geomorph", version = "3.3.2", repos = "http://cran.us.r-project.org")
+# require(devtools)
+# install_version("geomorph", version = "3.3.2", repos = "http://cran.us.r-project.org")
 library(geomorph) 
 library(rgl) # 3D Visualization
 library(vegan) # for NP MANOVA
@@ -13,7 +14,7 @@ getwd()
 
 # Read in GPA from Github library.
 gpa <- readRDS("../data/thechopper_GPA.rds")
-
+gpa <- readRDS("C:/Users/eotarola/Downloads/Sep_30_16_14_02_2022.gpa.ProcD.0Curves.1150surfs.rds")
 # Plot the 1152 GPA landmark data points for the 45 chopper and mastodon marks in 3D.
 clear3d()
 i=1
@@ -48,25 +49,25 @@ gp
 
 # 3D plot of the 20 chopper and 25 Bowser Road data along the first three PC axes.
 plot3d(dat, aspect = FALSE, type="n")
-text(x= dat, labels = gp, col=col)
+text3d(x= dat, texts = gp, col=col)
 
 ## Permutational MANOVA Analysis 
 # NP MANOVA of PC scores between Chopper and Bowser Road groups.
-mod1 <- adonis(dat ~ gp, permutations = 9999, method = "euclidean")
+mod1 <- adonis2(dat ~ gp, permutations = 9999, method = "euclidean")
 mod1
 
 # NP MANOVA of PC scores, log centroid size, and the interaction between group classification and loge centroid size between Chopper and Bowser Road groups.
-mod2 <- adonis(dat ~ gp + log(gpa$Csize) + gp:log(gpa$Csize), 
+mod2 <- adonis2(dat ~ gp + log(gpa$Csize) + gp:log(gpa$Csize), 
              permutations = 9999, method = "euclidean")
 mod2
 
 # NP MANOVA of PC scores and log centroid size between Chopper and Bowser Road groups.
-mod3 <- adonis(dat ~ gp + log(gpa$Csize), 
+mod3 <- adonis2(dat ~ gp + log(gpa$Csize), 
                permutations = 9999, method = "euclidean")
 mod3
 
 # NP MANOVA of PC scores and log centroid size.
-mod4 <- adonis(dat ~ log(gpa$Csize), 
+mod4 <- adonis2(dat ~ log(gpa$Csize), 
                permutations = 9999, method = "euclidean")
 mod4
 
@@ -118,6 +119,7 @@ sum(scores$gp ==r$class, na.rm = TRUE) / length(scores$gp)
 # confusion table
 table(r$class, scores$gp)
 
+
 # plot LDA histogram
 
 r2 <- lda(formula = scores$gp ~ as.matrix(scores[,1:p]) , 
@@ -138,3 +140,7 @@ jpeg(filename = "../output/Figure14.jpg",
 
 ldahist(data = r2.values$x[,1], g = gp, col=col2 )
 dev.off()
+
+# create dataframe with all data
+df<-data.frame(SPEC=rownames(co),GROUP=scores$gp,CLASS=r$class, r$posterior)
+df
