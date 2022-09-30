@@ -14,7 +14,7 @@ getwd()
 
 # Read in GPA from Github library.
 gpa <- readRDS("../data/thechopper_GPA.rds")
-gpa <- readRDS("C:/Users/eotarola/Downloads/Sep_30_16_14_02_2022.gpa.ProcD.0Curves.1150surfs.rds")
+
 # Plot the 1152 GPA landmark data points for the 45 chopper and mastodon marks in 3D.
 clear3d()
 i=1
